@@ -1,0 +1,19 @@
+{
+    "name": "@scom/scom-widget-test",
+    "version": "0.1.0",
+    "main": "dist/index.js",
+    "plugin": "dist",
+    "pluginTypes": "pluginTypes/index.d.ts",
+    "types": "pluginTypes/index.d.ts",
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "dependencies": {
+        "@ijstech/components": "^0.1.29",
+        "@ijstech/cli": "^0.1.26",
+        "@ijstech/compiler": "^0.1.22"
+    },
+    "scripts": {
+        "build": "rm -rf dist && npx @ijstech/compiler"
+    }
+}

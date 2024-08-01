@@ -116,7 +116,7 @@ export default class ScomWidgetTest extends Module {
           if (hasBuilder) {
             builder.setData(widgetData || {});
           }
-          const customForm = await action.customUI.render(hasBuilder ? { ...widget.getData() } : {}, (result: boolean, data: any) => {
+          const customForm = await action.customUI.render(hasBuilder ? { ...widget.getData() } : {}, async (result: boolean, data: any) => {
             if (this.onConfirm) {
               const { dark, light, tag } = data;
               let widgetTag = {};
@@ -129,7 +129,12 @@ export default class ScomWidgetTest extends Module {
                 widgetTag['light'] = lightTheme;
               }
               widgetTag = { ...widgetTag, ...tag };
-              this.onConfirm(data, widgetTag);
+              let setupData = {};
+              if (builder && typeof builder.setupData === 'function') {
+                await builder.setupData(data);
+                setupData = builder.getData();
+              }
+              this.onConfirm({ ...data, ...setupData }, widgetTag);
             }
           });
           this.pnlCustomForm.append(customForm);
@@ -162,7 +167,12 @@ export default class ScomWidgetTest extends Module {
                     widgetTag['light'] = lightTheme;
                   }
                   widgetTag = { ...widgetTag, ...tag };
-                  this.onConfirm(formData, widgetTag);
+                  let setupData = {};
+                  if (builder && typeof builder.setupData === 'function') {
+                    await builder.setupData(formData);
+                    setupData = builder.getData();
+                  }
+                  this.onConfirm({ ...formData, ...setupData }, widgetTag);
                 }
               }
             },

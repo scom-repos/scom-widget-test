@@ -83,7 +83,7 @@ define("@scom/scom-widget-test", ["require", "exports", "@ijstech/components"], 
                         if (hasBuilder) {
                             builder.setData(widgetData || {});
                         }
-                        const customForm = await action.customUI.render(hasBuilder ? { ...widget.getData() } : {}, (result, data) => {
+                        const customForm = await action.customUI.render(hasBuilder ? { ...widget.getData() } : {}, async (result, data) => {
                             if (this.onConfirm) {
                                 const { dark, light, tag } = data;
                                 let widgetTag = {};
@@ -96,7 +96,12 @@ define("@scom/scom-widget-test", ["require", "exports", "@ijstech/components"], 
                                     widgetTag['light'] = lightTheme;
                                 }
                                 widgetTag = { ...widgetTag, ...tag };
-                                this.onConfirm(data, widgetTag);
+                                let setupData = {};
+                                if (builder && typeof builder.setupData === 'function') {
+                                    await builder.setupData(data);
+                                    setupData = builder.getData();
+                                }
+                                this.onConfirm({ ...data, ...setupData }, widgetTag);
                             }
                         });
                         this.pnlCustomForm.append(customForm);
@@ -130,7 +135,12 @@ define("@scom/scom-widget-test", ["require", "exports", "@ijstech/components"], 
                                             widgetTag['light'] = lightTheme;
                                         }
                                         widgetTag = { ...widgetTag, ...tag };
-                                        this.onConfirm(formData, widgetTag);
+                                        let setupData = {};
+                                        if (builder && typeof builder.setupData === 'function') {
+                                            await builder.setupData(formData);
+                                            setupData = builder.getData();
+                                        }
+                                        this.onConfirm({ ...formData, ...setupData }, widgetTag);
                                     }
                                 }
                             },

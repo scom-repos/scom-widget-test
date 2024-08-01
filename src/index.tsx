@@ -131,8 +131,9 @@ export default class ScomWidgetTest extends Module {
               widgetTag = { ...widgetTag, ...tag };
               let setupData = {};
               if (builder && typeof builder.setupData === 'function') {
-                await builder.setupData(data);
-                setupData = builder.getData();
+                const hasSetup = await builder.setupData(data);
+                if (!hasSetup) return;
+                setupData = await builder.getData();
               }
               this.onConfirm({ ...data, ...setupData }, widgetTag);
             }
@@ -169,8 +170,9 @@ export default class ScomWidgetTest extends Module {
                   widgetTag = { ...widgetTag, ...tag };
                   let setupData = {};
                   if (builder && typeof builder.setupData === 'function') {
-                    await builder.setupData(formData);
-                    setupData = builder.getData();
+                    const hasSetup = await builder.setupData(formData);
+                    if (!hasSetup) return;
+                    setupData = await builder.getData();
                   }
                   this.onConfirm({ ...formData, ...setupData }, widgetTag);
                 }

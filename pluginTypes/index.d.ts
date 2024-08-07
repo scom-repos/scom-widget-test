@@ -1,3 +1,7 @@
+/// <amd-module name="@scom/scom-widget-test/index.css.ts" />
+declare module "@scom/scom-widget-test/index.css.ts" {
+    export const formStyle: string;
+}
 /// <amd-module name="@scom/scom-widget-test" />
 declare module "@scom/scom-widget-test" {
     import { Module, Container, ControlElement } from '@ijstech/components';

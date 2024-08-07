@@ -4,20 +4,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-define("@scom/scom-widget-test", ["require", "exports", "@ijstech/components"], function (require, exports, components_1) {
+define("@scom/scom-widget-test/index.css.ts", ["require", "exports", "@ijstech/components"], function (require, exports, components_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.formStyle = void 0;
+    exports.formStyle = components_1.Styles.style({
+        $nest: {
+            'i-scom-token-input > i-hstack > i-vstack': {
+                margin: '0 !important'
+            }
+        }
+    });
+});
+define("@scom/scom-widget-test", ["require", "exports", "@ijstech/components", "@scom/scom-widget-test/index.css.ts"], function (require, exports, components_2, index_css_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.chartWidgets = void 0;
-    components_1.Styles.Theme.darkTheme.text.primary = '#fff';
-    components_1.Styles.Theme.darkTheme.text.secondary = '#fff';
-    components_1.Styles.Theme.darkTheme.background.modal = '#1A1A1A';
-    components_1.Styles.Theme.darkTheme.input.background = '#232B5A';
-    components_1.Styles.Theme.darkTheme.input.fontColor = '#fff';
-    components_1.Styles.Theme.darkTheme.action.active = 'rgba(255,255,255, 0.16)';
-    components_1.Styles.Theme.applyTheme(components_1.Styles.Theme.darkTheme);
+    components_2.Styles.Theme.darkTheme.text.primary = '#fff';
+    components_2.Styles.Theme.darkTheme.text.secondary = '#fff';
+    components_2.Styles.Theme.darkTheme.background.modal = '#1A1A1A';
+    components_2.Styles.Theme.darkTheme.input.background = '#232B5A';
+    components_2.Styles.Theme.darkTheme.input.fontColor = '#fff';
+    components_2.Styles.Theme.darkTheme.action.active = 'rgba(255,255,255, 0.16)';
+    components_2.Styles.Theme.applyTheme(components_2.Styles.Theme.darkTheme);
     exports.chartWidgets = ['@scom/scom-pie-chart', '@scom/scom-line-chart', '@scom/scom-bar-chart', '@scom/scom-area-chart', '@scom/scom-mixed-chart', '@scom/scom-scatter-chart', '@scom/scom-counter'];
-    const Theme = components_1.Styles.Theme.ThemeVars;
-    let ScomWidgetTest = class ScomWidgetTest extends components_1.Module {
+    const Theme = components_2.Styles.Theme.ThemeVars;
+    let ScomWidgetTest = class ScomWidgetTest extends components_2.Module {
         static async create(options, parent) {
             let self = new this(parent, options);
             await self.ready();
@@ -68,7 +80,7 @@ define("@scom/scom-widget-test", ["require", "exports", "@ijstech/components"], 
         }
         async loadWidgetConfig(widgetData) {
             this.pnlWidgetWrapper.visible = false;
-            const widget = await components_1.application.createElement(this.widgetName);
+            const widget = await components_2.application.createElement(this.widgetName);
             this.pnlWidgetWrapper.clearInnerHTML();
             this.pnlWidgetWrapper.visible = true;
             this.pnlWidgetWrapper.appendChild(widget);
@@ -258,14 +270,14 @@ define("@scom/scom-widget-test", ["require", "exports", "@ijstech/components"], 
                         }
                     ] },
                     this.$render("i-panel", { id: "pnlWidgetWrapper" }),
-                    this.$render("i-panel", null,
+                    this.$render("i-panel", { class: index_css_1.formStyle },
                         this.$render("i-form", { id: "actionForm", visible: false }),
                         this.$render("i-panel", { id: "pnlCustomForm", visible: false })))));
         }
     };
     ScomWidgetTest = __decorate([
-        components_1.customModule,
-        (0, components_1.customElements)('i-scom-widget-test')
+        components_2.customModule,
+        (0, components_2.customElements)('i-scom-widget-test')
     ], ScomWidgetTest);
     exports.default = ScomWidgetTest;
 });

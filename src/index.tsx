@@ -9,6 +9,7 @@ import {
   Panel,
   Form,
 } from '@ijstech/components';
+import { formStyle } from './index.css';
 
 Styles.Theme.darkTheme.text.primary = '#fff';
 Styles.Theme.darkTheme.text.secondary = '#fff';
@@ -294,7 +295,7 @@ export default class ScomWidgetTest extends Module {
           ]}
         >
           <i-panel id="pnlWidgetWrapper" />
-          <i-panel>
+          <i-panel class={formStyle}>
             <i-form id="actionForm" visible={false} />
             <i-panel id="pnlCustomForm" visible={false} />
           </i-panel>

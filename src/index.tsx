@@ -8,6 +8,7 @@ import {
   application,
   Panel,
   Form,
+  Label,
 } from '@ijstech/components';
 import { formStyle } from './index.css';
 
@@ -43,6 +44,8 @@ export default class ScomWidgetTest extends Module {
   private _widgetName: string;
   private _widgetType: string;
   private pnlWidgetWrapper: Panel;
+  private widgetWrapper: Panel;
+  private lbHintPreview: Label;
   private actionForm: Form;
   private pnlCustomForm: Panel;
   onConfirm: (data: any, tag?: any) => void;
@@ -100,12 +103,14 @@ export default class ScomWidgetTest extends Module {
     return action;
   }
 
-  private async loadWidgetConfig(widgetData: any) {
+  private async loadWidgetConfig(widgetData: any, hint?: string) {
     this.pnlWidgetWrapper.visible = false;
+    this.lbHintPreview.visible = !!hint;
+    this.lbHintPreview.caption = hint || '';
     const widget: any = await application.createElement(this.widgetName);
-    this.pnlWidgetWrapper.clearInnerHTML();
     this.pnlWidgetWrapper.visible = true;
-    this.pnlWidgetWrapper.appendChild(widget);
+    this.widgetWrapper.clearInnerHTML();
+    this.widgetWrapper.appendChild(widget);
     if (widget?.getConfigurators) {
       const isChart = chartWidgets.includes(this.widgetName);
       const action = this.getActions(widget, isChart);
@@ -139,6 +144,7 @@ export default class ScomWidgetTest extends Module {
               this.onConfirm({ ...data, ...setupData }, widgetTag);
             }
           });
+          this.pnlCustomForm.clearInnerHTML();
           this.pnlCustomForm.append(customForm);
           this.pnlCustomForm.visible = true;
         } else {
@@ -259,9 +265,9 @@ export default class ScomWidgetTest extends Module {
     }
   }
 
-  show(data?: any) {
+  show(data?: any, hint?: string) {
     if (!this.widgetName) return;
-    this.loadWidgetConfig(data);
+    this.loadWidgetConfig(data, hint);
   }
 
   onClose() {
@@ -294,7 +300,12 @@ export default class ScomWidgetTest extends Module {
             }
           ]}
         >
-          <i-panel id="pnlWidgetWrapper" />
+          <i-vstack id="pnlWidgetWrapper" gap="0.5rem" horizontalAlignment="center">
+            <i-label caption="Widget Preview" font={{ color: Theme.colors.primary.main, size: '1rem', bold: true }} />
+            <i-label caption="This preview will update real-time as the config on the right changes" font={{ size: '0.75rem' }} opacity={0.75} />
+            <i-label id="lbHintPreview" visible={false} font={{ color: Theme.colors.error.main, size: '0.75rem' }} />
+            <i-panel id="widgetWrapper" />
+          </i-vstack>
           <i-panel class={formStyle}>
             <i-form id="actionForm" visible={false} />
             <i-panel id="pnlCustomForm" visible={false} />

@@ -78,12 +78,14 @@ define("@scom/scom-widget-test", ["require", "exports", "@ijstech/components", "
             }
             return action;
         }
-        async loadWidgetConfig(widgetData) {
+        async loadWidgetConfig(widgetData, hint) {
             this.pnlWidgetWrapper.visible = false;
+            this.lbHintPreview.visible = !!hint;
+            this.lbHintPreview.caption = hint || '';
             const widget = await components_2.application.createElement(this.widgetName);
-            this.pnlWidgetWrapper.clearInnerHTML();
             this.pnlWidgetWrapper.visible = true;
-            this.pnlWidgetWrapper.appendChild(widget);
+            this.widgetWrapper.clearInnerHTML();
+            this.widgetWrapper.appendChild(widget);
             if (widget?.getConfigurators) {
                 const isChart = exports.chartWidgets.includes(this.widgetName);
                 const action = this.getActions(widget, isChart);
@@ -118,6 +120,7 @@ define("@scom/scom-widget-test", ["require", "exports", "@ijstech/components", "
                                 this.onConfirm({ ...data, ...setupData }, widgetTag);
                             }
                         });
+                        this.pnlCustomForm.clearInnerHTML();
                         this.pnlCustomForm.append(customForm);
                         this.pnlCustomForm.visible = true;
                     }
@@ -242,10 +245,10 @@ define("@scom/scom-widget-test", ["require", "exports", "@ijstech/components", "
                 }
             }
         }
-        show(data) {
+        show(data, hint) {
             if (!this.widgetName)
                 return;
-            this.loadWidgetConfig(data);
+            this.loadWidgetConfig(data, hint);
         }
         onClose() {
             this.closeModal();
@@ -269,7 +272,11 @@ define("@scom/scom-widget-test", ["require", "exports", "@ijstech/components", "
                             }
                         }
                     ] },
-                    this.$render("i-panel", { id: "pnlWidgetWrapper" }),
+                    this.$render("i-vstack", { id: "pnlWidgetWrapper", gap: "0.5rem", horizontalAlignment: "center" },
+                        this.$render("i-label", { caption: "Widget Preview", font: { color: Theme.colors.primary.main, size: '1rem', bold: true } }),
+                        this.$render("i-label", { caption: "This preview will update real-time as the config on the right changes", font: { size: '0.75rem' }, opacity: 0.75 }),
+                        this.$render("i-label", { id: "lbHintPreview", visible: false, font: { color: Theme.colors.error.main, size: '0.75rem' } }),
+                        this.$render("i-panel", { id: "widgetWrapper" })),
                     this.$render("i-panel", { class: index_css_1.formStyle },
                         this.$render("i-form", { id: "actionForm", visible: false }),
                         this.$render("i-panel", { id: "pnlCustomForm", visible: false })))));

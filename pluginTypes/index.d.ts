@@ -22,6 +22,8 @@ declare module "@scom/scom-widget-test" {
         private _widgetName;
         private _widgetType;
         private pnlWidgetWrapper;
+        private widgetWrapper;
+        private lbHintPreview;
         private actionForm;
         private pnlCustomForm;
         onConfirm: (data: any, tag?: any) => void;
@@ -34,7 +36,7 @@ declare module "@scom/scom-widget-test" {
         private compareThemes;
         private getActions;
         private loadWidgetConfig;
-        show(data?: any): void;
+        show(data?: any, hint?: string): void;
         onClose(): void;
         init(): Promise<void>;
         render(): any;
